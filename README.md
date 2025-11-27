@@ -1,7 +1,3 @@
-## Contexte
-Rapport de correction du **TD 3 — Virtualisation**. Ce document regroupe les réponses aux exercices demandés, formaté pour une lecture facile sur GitHub.
-
----
 
 ## Exercice 1
 
