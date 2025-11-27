@@ -1,96 +1,81 @@
-Rapport du TD 3
-🧩 Exercice 1
-1. Différence entre ring 0 et ring 3
+## Contexte
+Rapport de correction du **TD 3 — Virtualisation**. Ce document regroupe les réponses aux exercices demandés, formaté pour une lecture facile sur GitHub.
 
-Ring 0 : niveau de privilège maximal, utilisé par le noyau.
+---
 
-Ring 3 : niveau le plus faible, utilisé par les applications.
+## Exercice 1
 
-2. Pourquoi une application ne peut pas contrôler le système d’exploitation ?
+**1. Différence entre ring 0 et ring 3**  
+- **Ring 0 :** niveau de privilège maximal — utilisé par le noyau (kernel).  
+- **Ring 3 :** niveau utilisateur — utilisé par les applications (accès restreint).
 
-Parce qu’elle fonctionne en ring 3 et n’a pas les privilèges nécessaires pour accéder directement au matériel.
+**2. Pourquoi une application ne peut pas contrôler l’OS ?**  
+Parce qu’elle s’exécute en **ring 3** sans privilèges matériels ; l’accès direct au matériel est bloqué pour assurer sécurité et stabilité.
 
-3. Signification de « Guest OS »
+**3. Guest OS**  
+Système d’exploitation *invité* exécuté dans une machine virtuelle (VM).
 
-Un Guest OS est un système d’exploitation invité qui tourne dans une machine virtuelle.
+---
 
-🧩 Exercice 2
-1. Différence entre hyperviseur Type I et Type II
+## Exercice 2
 
-Type I (bare-metal) : fonctionne directement sur le matériel.
+**1. Différence entre hyperviseur Type I et Type II**  
+- **Type I (bare-metal)** : installé directement sur le matériel (meilleures performances).  
+- **Type II (hosted)** : installé sur un OS hôte (plus simple d’usage mais moins performant).
 
-Type II (hosted) : fonctionne au-dessus d’un OS hôte.
+**2. Exemples**  
+- *Type I* : VMware ESXi, Microsoft Hyper-V, Xen.  
+- *Type II* : VirtualBox, VMware Workstation, Parallels Desktop.
 
-2. Exemples
+---
 
-Type I : VMware ESXi, Hyper-V Server.
+## Exercice 3
 
-Type II : VirtualBox, VMware Workstation.
+**1. Deux caractéristiques de la virtualisation complète**  
+- Le **Guest OS n’a pas besoin d’être modifié**.  
+- Le matériel est **émulé intégralement**.
 
-🧩 Exercice 3
-1. Deux caractéristiques de la virtualisation complète
+**2. Pourquoi la para-virtualisation modifie le noyau invité ?**  
+Parce que le Guest OS doit être *conscient* de l’environnement virtuel et remplacer certaines opérations matériel par des **hypercalls**.
 
-Le Guest OS n’a pas besoin d’être modifié.
+**3. Avantage / Inconvénient**  
+- **Avantage :** meilleures performances (moins d’émulation).  
+- **Inconvénient :** nécessite modification du Guest OS → compatibilité réduite.
 
-Le matériel est totalement émulé.
+---
 
-2. Pourquoi la para-virtualisation nécessite la modification du noyau invité ?
+## Exercice 4
 
-Parce que le Guest OS doit être capable d'utiliser des hypercalls au lieu d’instructions non autorisées.
+**1. Principe du partitionnement**  
+Le matériel est **découpé en partitions physiques** (CPU, mémoire, I/O) et chaque partition exécute son propre OS.
 
-3. Avantage et inconvénient de la para-virtualisation
+**2. Pourquoi ce type ne permet pas d’exécuter Windows ?**  
+Car le partitionnement ne fournit pas l’abstraction matérielle complète nécessaire pour certains OS commerciaux ; la compatibilité n’est pas garantie.
 
-Avantage : meilleures performances.
+---
 
-Inconvénient : nécessite un Guest OS modifié (ex : Windows non compatible).
+## Exercice 5
 
-🧩 Exercice 4
-1. Principe de la virtualisation par partitionnement
+**1. Technologies Intel/AMD pour la virtualisation matérielle**  
+- **Intel VT-x**  
+- **AMD-V**
 
-Le matériel est divisé en partitions physiques et chaque partition exécute un OS différent.
+**2. Rôle du ring −1**  
+Niveau réservé à l’**hyperviseur** (plus privilégié que ring 0 invité) pour contrôler et isoler les OS invités.
 
-2. Pourquoi ce type ne permet pas d’exécuter Windows ?
+**3. Que fait l’instruction `VMXON` ?**  
+Active le mode de virtualisation matérielle Intel (VT-x) sur le processeur.
 
-Parce qu’il ne fournit pas une émulation matérielle complète, seulement un partage du matériel.
+---
 
-🧩 Exercice 5
-1. Technologies Intel et AMD pour la virtualisation
+## Exercice 6
 
-Intel VT-x
+**1. Qu’est-ce que le cloisonnement ?**  
+Création d’environnements isolés (containers) au sein d’un même noyau.
 
-AMD-V
+**2. Avantages / Inconvénients**  
+- *Avantages :* léger, démarrage rapide.  
+- *Inconvénients :* isolation moins forte que VMs ; tous partagent le même noyau.
 
-2. Rôle du ring -1
-
-Il permet à l’hyperviseur d’avoir un niveau de privilège supérieur au noyau invité.
-
-3. Rôle de l’instruction VMXON
-
-Active le mode de virtualisation matérielle Intel VT-x.
-
-🧩 Exercice 6
-1. Qu’est-ce que le cloisonnement ?
-
-C’est la création d’environnements isolés dans un même OS (ex : containers).
-
-2. Avantages et inconvénients
-
-Avantages :
-
-Très léger
-
-Rapide à lancer
-
-Inconvénients :
-
-Isolation plus faible
-
-Dépend du même noyau pour tous les environnements
-
-3. Exemple de technologie
-
-Docker
-
-LXC
-
-FreeBSD Jails
+**3. Exemple**  
+Docker, LXC, FreeBSD Jails.
